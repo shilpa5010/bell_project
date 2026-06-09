@@ -1,13 +1,12 @@
 
-```
-“This solution prioritises clean components based architecture  and type safety over feature completeness.”
-```
-
 # Product Catalog — Full Stack Challenge
 
 ## Overview
 The application displays a list of products and allows users to add items to a wishlist. App have a provision to see the whislist through My Wishlist Page
 
+```
+“This solution prioritises clean components based architecture  and type safety over feature completeness.”
+```
 ---
 
 ## Features
