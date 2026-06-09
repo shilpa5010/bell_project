@@ -35,20 +35,4 @@ describe("App", () => {
       "http://localhost:3000/api/store-name",
     );
   });
-
-  // it('renders the placeholder text', () => {
-  //   globalThis.fetch = vi.fn().mockResolvedValue({
-  //     json: () => Promise.resolve({ name: '' }),
-  //   }) as unknown as typeof fetch;
-
-  //   render(
-  //     <MemoryRouter>
-  //       <App />
-  //     </MemoryRouter>,
-  //   );
-
-  //   expect(
-  //     screen.getByText('Product Library will go here'),
-  //   ).toBeInTheDocument();
-  // });
 });

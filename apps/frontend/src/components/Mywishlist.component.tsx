@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { ProductContainer } from "./Products.elements";
+import { ProductCard } from "./Card/Card.component";
 
 type Product = {
   id: number;
@@ -11,7 +9,7 @@ type Product = {
   image: string;
   price: number;
 };
-
+// Mywishlist component to display products
 export const Mywishlist: React.FC = () => {
   const API_BASE_URL =
     import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
@@ -31,22 +29,7 @@ export const Mywishlist: React.FC = () => {
       </Typography>
       <ProductContainer>
         {wishlistProducts.map((product) => (
-          <Card key={product.id} sx={{ maxWidth: 345 }}>
-            <CardHeader
-              title={product.name}
-              subheader={`$${product.price.toFixed(2)}`}
-            />
-            <CardMedia
-              component="img"
-              image={product.image}
-              alt={product.name}
-              sx={{
-                width: "100%",
-                aspectRatio: "4 / 3",
-                objectFit: "cover",
-              }}
-            />
-          </Card>
+          <ProductCard key={product.id} product={product} />
         ))}
       </ProductContainer>
     </>

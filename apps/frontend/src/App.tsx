@@ -5,13 +5,13 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { Link, Navigate, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import { Products } from "./components/Products.component";
 import { Mywishlist } from "./components/Mywishlist.component";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
-console.log("API Base URL:", API_BASE_URL);
+
 function App() {
   const [storeName, setStoreName] = useState<string>("");
 
@@ -46,7 +46,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Products />} />
           <Route path="/mywishlist" element={<Mywishlist />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Container>
     </Box>

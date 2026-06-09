@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { ProductContainer, CardTitle } from "./Products.elements";
+import { ProductContainer } from "./Products.elements";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import IconButton from "@mui/material/IconButton";
+import { ProductCard } from "./Card/Card.component";
 
 type Product = {
   id: number;
@@ -21,14 +17,15 @@ type WishlistItem = {
   id: number;
 };
 
-export const Products: React.FC = () => {
-  const API_BASE_URL =
-    import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
 
+export const Products: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [wishlistIds, setWishlistIds] = useState<number[]>([]);
   const [currentTab, setCurrentTab] = React.useState("all");
 
+  // Fetch products and wishlist items on component mount
   useEffect(() => {
     Promise.all([
       fetch(`${API_BASE_URL}/products`).then(
@@ -45,10 +42,8 @@ export const Products: React.FC = () => {
       .catch((err) => console.error("Failed to fetch product data:", err));
   }, []);
 
-  const handleWishlist = (product: Product) => {
-    const productId = product.id;
-
-    // Optimistic UI: toggle immediately so icon color updates on click.
+  //To habdle wishlist To save to the Database and also to update the UI
+  const handleWishlist = (productId: number) => {
     setWishlistIds((prev) =>
       prev.includes(productId)
         ? prev.filter((id) => id !== productId)
@@ -67,6 +62,7 @@ export const Products: React.FC = () => {
       .catch((err) => console.error("Failed to add to wishlist:", err));
   };
 
+  // Handle tab change
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setCurrentTab(newValue);
   };
@@ -91,38 +87,13 @@ export const Products: React.FC = () => {
           (product) => currentTab === "all" || product.type === currentTab,
         )
         .map((product) => (
-          <Card key={product.id} sx={{ maxWidth: 345 }}>
-            <CardTitle>
-              <CardHeader
-                title={product.name}
-                subheader={`$${product.price.toFixed(2)}`}
-              />
-              <IconButton
-                aria-label="add to favorites"
-                onClick={() => {
-                  handleWishlist(product);
-                }}
-              >
-                <FavoriteIcon
-                  sx={{
-                    color: wishlistIds.includes(product.id)
-                      ? "#d32f2f"
-                      : "#9e9e9e",
-                  }}
-                />
-              </IconButton>
-            </CardTitle>
-            <CardMedia
-              component="img"
-              image={product.image}
-              alt={product.name}
-              sx={{
-                width: "100%",
-                aspectRatio: "4 / 3",
-                objectFit: "cover",
-              }}
-            />
-          </Card>
+          <ProductCard
+            key={product.id}
+            product={product}
+            showWishlistButton
+            isWishlisted={wishlistIds.includes(product.id)}
+            onToggleWishlist={handleWishlist}
+          />
         ))}
     </ProductContainer>
   );

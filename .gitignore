@@ -1,8 +1,20 @@
 # build output
 dist
+build
+
 
 # dependencies
-node_modules/
+node_modules
+.pnpm-store
 
 # environment variables
 .env
+
+# OS Files
+.DS_Store
+
+# IDE
+.vscode
+
+# TypeScript
+*.tsbuildinfo

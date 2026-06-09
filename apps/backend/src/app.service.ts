@@ -6,7 +6,6 @@ import { Product } from "./products/products";
 @Injectable()
 export class AppService {
   private products: Product[] = productData;
-  //should store only productid in the wishlist array liek [{id:1}, {id:2}]
   private wishlist: { id: number }[] = wishlistData;
 
   getStoreName(): { name: string } {
@@ -22,19 +21,18 @@ export class AppService {
     return this.products;
   }
 
+  // Fetching product by id and throwing an error if product is not found.
   getProductById(id: number): Product {
     const product = this.products.find((p) => p.id === id);
     if (!product) throw new BadRequestException("Product not found");
     return product;
   }
-
+  // Fetching wishlist products by mapping the wishlist items to their  products.
   getWishlist(): Product[] {
-    // console.log(`Current wishlist IDs:`, this.wishlist);
-    // throw new Error(`Current wishlist IDs: ${JSON.stringify(this.wishlist)}`);
     return this.wishlist.map((item) => this.getProductById(item.id));
   }
 
-  //Function to handleWishlist
+  // Function to handle wishlist
   handleWishlist(productId: number): { id: number }[] {
     console.log(`Handling wishlist for product ID: ${productId}`);
     this.getProductById(productId);
