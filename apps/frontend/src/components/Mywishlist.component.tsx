@@ -9,18 +9,52 @@ type Product = {
   image: string;
   price: number;
 };
+
+type WishlistItem = {
+  id: number;
+};
+
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
+
 // Mywishlist component to display products
 export const Mywishlist: React.FC = () => {
-  const API_BASE_URL =
-    import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
   const [wishlistProducts, setWishlistProducts] = useState<Product[]>([]);
+  const [wishlistIds, setWishlistIds] = useState<number[]>([]);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/wishlist`)
       .then((res) => res.json())
-      .then((data: Product[]) => setWishlistProducts(data))
+      .then((data: Product[]) => {
+        setWishlistProducts(data);
+        setWishlistIds(data.map((item) => item.id));
+      })
       .catch((err) => console.error("Failed to fetch wishlist:", err));
-  }, [API_BASE_URL]);
+  }, []);
+
+  const handleWishlist = (productId: number) => {
+    const wasWishlisted = wishlistIds.includes(productId);
+
+    setWishlistIds((prev) =>
+      prev.includes(productId)
+        ? prev.filter((id) => id !== productId)
+        : [...prev, productId],
+    );
+
+    if (wasWishlisted) {
+      setWishlistProducts((prev) => prev.filter((item) => item.id !== productId));
+    }
+
+    fetch(`${API_BASE_URL}/wishlist`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ productId }),
+    })
+      .then((res) => res.json() as Promise<WishlistItem[]>)
+      .catch((err) => console.error("Failed to update wishlist:", err));
+  };
 
   return (
     <>
@@ -29,7 +63,13 @@ export const Mywishlist: React.FC = () => {
       </Typography>
       <ProductContainer>
         {wishlistProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard
+            key={product.id}
+            product={product}
+            showWishlistButton
+            isWishlisted={wishlistIds.includes(product.id)}
+            onToggleWishlist={handleWishlist}
+          />
         ))}
       </ProductContainer>
     </>

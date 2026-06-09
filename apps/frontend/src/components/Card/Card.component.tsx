@@ -19,7 +19,7 @@ type ProductCardProps = {
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
-  showWishlistButton = false,
+  showWishlistButton = true,
   isWishlisted = false,
   onToggleWishlist,
 }) => {
