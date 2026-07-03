@@ -1,5 +1,5 @@
 
-# Product Catalog — Full Stack Challenge
+# Product Catalog — Full Stack
 
 ## Overview
 The application displays a list of products and allows users to add items to a wishlist. App have a provision to see the whislist through My Wishlist Page
